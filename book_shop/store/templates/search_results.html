@@ -1,0 +1,56 @@
+{% load static %}
+{% block extended_search %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Search</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'mybookshop/css/normalize.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'icomoon/icomoon.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'mybookshop/css/vendor.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'mybookshop/css/style.css'%}">
+</head>
+<body>
+    <div class="container">
+        <h1>Extended Book Search</h1>
+        <form class="search-extended" action="{% url 'extended_search' %}" method="GET">
+            {% csrf_token %}
+            {{ extended_search_form.as_p }}
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+        {% if show_results %}
+            {% if found_books %}
+                <div class="search-results mt-4">
+                    <h2>Search Results</h2>
+                    {% for book in found_books %}
+                    <div class="col-md-3">
+        				<div class="product-item">
+            				<figure class="product-style">
+               	 				<img src="{{ book.image.url }}" alt="{{ book.name }}" class="product-item">
+                				<a href="{{ book.url }}">
+                                    <button type="button" class="add-to-cart" data-product-tile="add-to-cart">
+									    Read
+                				    </button>
+                                </a>
+            				</figure>
+                                <a href="{% url 'book_detail' book.slug %}" class="btn btn-info">View Details</a>
+            				<figcaption>
+                				<h3><a href="">{{ book.name }}</a></h3>
+                				<span>{{ book.author }}</span>
+            				</figcaption>
+        				</div>
+    				</div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info mt-4">
+                    No books found matching your criteria.
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}
+</body>
+</html>
