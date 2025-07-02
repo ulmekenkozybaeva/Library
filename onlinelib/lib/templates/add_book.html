@@ -1,0 +1,280 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BookSaw</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'mybookshop/css/normalize.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'icomoon/icomoon.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'mybookshop/css/vendor.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'mybookshop/css/style.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+<style>
+    .book-form {
+        background: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin: 40px auto;
+        max-width: 800px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .form-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        color: #2c3e50;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .form-header i {
+        margin-right: 10px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #7f8c8d;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 10px 15px;
+        background: white;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #42addb;
+        outline: none;
+    }
+
+    .btn-submit {
+        background: #f0e2bb;
+        color: black;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-submit:hover {
+        background: #42addb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+    }
+
+    .btn-cancel {
+        color: #7f8c8d;
+        border: 1px solid #eee;
+        padding: 12px 25px;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-cancel:hover {
+        color: #34495e;
+        border-color: #ddd;
+    }
+
+    .genre-selector {
+        display: flex;
+        gap: 15px;
+    }
+
+    .genre-selector > div {
+        flex: 1;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-text {
+        color: #bbb;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+
+    .file-upload-wrapper {
+        position: relative;
+        margin-bottom: 15px;
+    }
+
+    .file-upload-label {
+        display: block;
+        padding: 15px;
+        border: 2px dashed #eee;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: white;
+    }
+
+    .file-upload-label:hover {
+        border-color: #42addb;
+        background: #f5f5f5;
+    }
+
+    .file-upload-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .action-buttons {
+        margin-top: 30px;
+        display: flex;
+        gap: 15px;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .genre-selector {
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .book-form {
+            padding: 20px;
+            margin: 20px auto;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .btn-submit, .btn-cancel {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="book-form">
+    <h2 class="form-header">
+        <i class="fas fa-book-medical"></i>Add new book
+    </h2>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">{{ form.name.label }} *</label>
+                    {{ form.name }}
+                    <small class="form-text">Full label of the book</small>
+                    {{ form.name.errors }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">{{ form.author.label }} *</label>
+                    {{ form.author }}
+                    <small class="form-text">Author`s name</small>
+                    {{ form.author.errors }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Genre *</label>
+            <div class="genre-selector">
+                <div>
+                    {{ form.genre }}
+                    <small class="form-text">Choose</small>
+                    {{ form.genre.errors }}
+                </div>
+                <div>
+                    {{ form.new_genre }}
+                    <small class="form-text">New genre</small>
+                    {{ form.new_genre.errors }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ form.description.label }}</label>
+            {{ form.description }}
+            <small class="form-text">Book`s description</small>
+            {{ form.description.errors }}
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">{{ form.image.label }}</label>
+                    <div class="file-upload-wrapper">
+                        <label class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt me-2"></i>
+                            <span class="file-upload-text">Upload the cover</span>
+                            {{ form.image }}
+                        </label>
+                    </div>
+                    {{ form.image.errors }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="form-label">{{ form.url.label }}</label>
+                    {{ form.url }}
+                    <small class="form-text">{{ form.url.help_text }}</small>
+                    {{ form.url.errors }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">{{ form.number_of_pages.label }} *</label>
+            {{ form.number_of_pages }}
+            {{ form.number_of_pages.errors }}
+        </div>
+
+        <div class="action-buttons">
+            <a href="{% url 'book_list' %}" class="btn-cancel">
+                <i class="fas fa-arrow-left me-1"></i> Back
+            </a>
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save me-1"></i> Save
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.querySelectorAll('.file-upload-input').forEach(input => {
+        input.addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'None';
+            const textElement = this.closest('.file-upload-label').querySelector('.file-upload-text');
+            textElement.textContent = fileName;
+        });
+    });
+</script>
+</body>
+</html>
