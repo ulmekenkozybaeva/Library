@@ -4,8 +4,10 @@ from django.utils.text import slugify
 from django.utils import timezone
 from django.urls import reverse
 
+
 def one_week_hence():
     return timezone.now() + timezone.timedelta(days=7)
+
 
 def unique_slugify(instance, slug):
     model = instance.__class__
@@ -41,6 +43,7 @@ class Genre(models.Model):
                     break
             self.slug = unique_slug
         super().save(*args, **kwargs)
+
 
 class DetailedBook(models.Model):
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE, related_name='Books', verbose_name="Genre")
